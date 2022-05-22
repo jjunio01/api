@@ -1,0 +1,75 @@
+-- Geração de Modelo físico
+-- Sql ANSI 2003 - brModelo.
+
+CREATE TABLE CLIENTE (
+id_cliente INTEGER PRIMARY KEY,
+codigo VARCHAR(19) NOT NULL,
+telefone VARCHAR(11),
+nome VARCHAR(255) NOT NULL,
+senha VARCHAR(255) NOT NULL,
+email VARCHAR(200) NOT NULL
+);
+
+CREATE TABLE ENDERECO (
+id_endereco INTEGER PRIMARY KEY,
+cidade VARCHAR(40) NOT NULL,
+bairro VARCHAR(40) NOT NULL,
+rua VARCHAR(100) NOT NULL,
+numero VARCHAR(12) NOT NULL,
+referencia VARCHAR(200),
+id_fornecedor INTEGER,
+id_cliente INTEGER,
+FOREIGN KEY(id_cliente) REFERENCES CLIENTE (id_cliente)
+);
+
+CREATE TABLE FORNECEDOR (
+id_fornecedor INTEGER PRIMARY KEY,
+cnpj VARCHAR(19) NOT NULL,
+telefone VARCHAR(11),
+nome_fantasia VARCHAR(40) NOT NULL,
+razao_social VARCHAR(40)
+);
+
+CREATE TABLE ESTOQUE (
+id_estoque INTEGER PRIMARY KEY,
+quantidade INTEGER NOT NULL,
+id_fornecedor INTEGER,
+FOREIGN KEY(id_fornecedor) REFERENCES FORNECEDOR (id_fornecedor)
+);
+
+CREATE TABLE PRODUTO (
+id_produto INTEGER PRIMARY KEY,
+valor NUMERIC(10) NOT NULL,
+marca VARCHAR(20),
+descricao VARCHAR(40),
+nome VARCHAR(40) NOT NULL,
+id_estoque INTEGER,
+FOREIGN KEY(id_estoque) REFERENCES ESTOQUE (id_estoque)
+);
+
+CREATE TABLE CARRINHO (
+id_carrinho INTEGER PRIMARY KEY,
+valor_total NUMERIC(10) NOT NULL
+);
+
+CREATE TABLE ITEM_PRODUTO (
+quantidade VARCHAR(10) NOT NULL,
+valor NUMERIC(10),
+id_produto INTEGER,
+id_carrinho INTEGER,
+FOREIGN KEY(id_produto) REFERENCES PRODUTO (id_produto),
+FOREIGN KEY(id_carrinho) REFERENCES CARRINHO (id_carrinho)
+);
+
+CREATE TABLE PEDIDO (
+id_pedido INTEGER PRIMARY KEY,
+valor_total NUMERIC(10),
+data DATETIME,
+status VARCHAR(15) NOT NULL,
+id_cliente INTEGER,
+id_endereco INTEGER,
+FOREIGN KEY(id_cliente) REFERENCES CLIENTE (id_cliente),
+FOREIGN KEY(id_endereco) REFERENCES ENDERECO (id_endereco)
+);
+
+ALTER TABLE ENDERECO ADD FOREIGN KEY(id_fornecedor) REFERENCES FORNECEDOR (id_fornecedor);
