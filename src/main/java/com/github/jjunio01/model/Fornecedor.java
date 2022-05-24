@@ -1,39 +1,46 @@
 package com.github.jjunio01.model;
 
+import java.io.Serializable;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  * @author JJunio
  *
  */
-public class Fornecedor {
+@Entity(name = "FORNECEDOR")
+public class Fornecedor implements Serializable {
 
+	private static final long serialVersionUID = -5270992910804682425L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_fornecedor")
 	private int id;
-	private String cnpj;
-	private String telefone;
+
+	@Column(name = "nome_fantasia")
 	private String nomeFantasia;
+
+	@Column(name = "razao_social")
 	private String razaoSocial;
+
+	@OneToMany(mappedBy = "fornecedor")
 	private List<Endereco> enderecos;
+
+	@OneToMany(mappedBy = "fornecedor")
 	private List<Estoque> estoques;
 
-	public int getId() {
-		return id;
-	}
+	private String cnpj;
+	private String telefone;
 
-	public String getCnpj() {
-		return cnpj;
-	}
+	public Fornecedor() {
 
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
-	}
-
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
 	}
 
 	public String getNomeFantasia() {
@@ -66,6 +73,30 @@ public class Fornecedor {
 
 	public void setEstoques(List<Estoque> estoques) {
 		this.estoques = estoques;
+	}
+
+	public String getCnpj() {
+		return cnpj;
+	}
+
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	@Override

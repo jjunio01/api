@@ -1,24 +1,75 @@
 package com.github.jjunio01.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  * @author JJunio
  *
  */
-public class Cliente {
+@Entity(name = "CLIENTE")
+public class Cliente implements Serializable {
 
+	private static final long serialVersionUID = -4592546754689915905L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_cliente")
 	private int id;
+
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Endereco> enderecos;
+
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Pedido> pedidos;
+
+	@OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private Pedido pedido;
+
 	private String codigo;
 	private String telefone;
 	private String nome;
 	private String senha;
 	private String email;
-	private List<Endereco> enderecos;
-	private List<Pedido> pedidos;
 
-	public int getId() {
-		return id;
+	public Cliente() {
+		this.enderecos = new ArrayList<Endereco>();
+		this.pedidos = new ArrayList<Pedido>();
+	}
+
+	public List<Endereco> getEnderecos() {
+		return enderecos;
+	}
+
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
 	}
 
 	public String getCodigo() {
@@ -61,20 +112,12 @@ public class Cliente {
 		this.email = email;
 	}
 
-	public List<Endereco> getEnderecos() {
-		return enderecos;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
-	public void setEnderecos(List<Endereco> enderecos) {
-		this.enderecos = enderecos;
-	}
-
-	public List<Pedido> getPedidos() {
-		return pedidos;
-	}
-
-	public void setPedidos(List<Pedido> pedidos) {
-		this.pedidos = pedidos;
+	public int getId() {
+		return id;
 	}
 
 	@Override
@@ -86,6 +129,7 @@ public class Cliente {
 		result = prime * result + ((enderecos == null) ? 0 : enderecos.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + ((pedido == null) ? 0 : pedido.hashCode());
 		result = prime * result + ((pedidos == null) ? 0 : pedidos.hashCode());
 		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
 		result = prime * result + ((telefone == null) ? 0 : telefone.hashCode());
@@ -122,6 +166,11 @@ public class Cliente {
 			if (other.nome != null)
 				return false;
 		} else if (!nome.equals(other.nome))
+			return false;
+		if (pedido == null) {
+			if (other.pedido != null)
+				return false;
+		} else if (!pedido.equals(other.pedido))
 			return false;
 		if (pedidos == null) {
 			if (other.pedidos != null)

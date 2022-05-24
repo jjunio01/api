@@ -1,35 +1,84 @@
 package com.github.jjunio01.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  * @author JJunio
  *
  */
-public class Carrinho {
+@Entity(name = "CARRINHO")
+public class Carrinho implements Serializable {
 
+	private static final long serialVersionUID = -1535690890808810531L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_carrinho")
 	private int id;
-	private double valroTotal;
-	private List<ItemProduto> items;
+
+	@Column(name = "valor_total")
+	private double valorTotal;
+
+	@OneToMany(mappedBy = "carrinho", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ItemProduto> itens;
+
+	@OneToOne(mappedBy = "carrinho", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private Pedido pedido;
+
+	public Carrinho() {
+		this.itens = new ArrayList<ItemProduto>();
+	}
+
+	public void adicionaItemProduto(Produto novoProduto) {
+
+	}
+
+	public void removerItemProduto(Produto novoProduto) {
+
+	}
+
+	public double getValorTotal() {
+		return valorTotal;
+	}
+
+	public void setValorTotal(double valorTotal) {
+		this.valorTotal = valorTotal;
+	}
+
+	public List<ItemProduto> getItens() {
+		return itens;
+	}
+
+	public void setItens(List<ItemProduto> itens) {
+		this.itens = itens;
+	}
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	public int getId() {
 		return id;
-	}
-
-	public double getValroTotal() {
-		return valroTotal;
-	}
-
-	public void setValroTotal(double valroTotal) {
-		this.valroTotal = valroTotal;
-	}
-
-	public List<ItemProduto> getItems() {
-		return items;
-	}
-
-	public void setItems(List<ItemProduto> items) {
-		this.items = items;
 	}
 
 	@Override
@@ -37,9 +86,10 @@ public class Carrinho {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + id;
-		result = prime * result + ((items == null) ? 0 : items.hashCode());
+		result = prime * result + ((itens == null) ? 0 : itens.hashCode());
+		result = prime * result + ((pedido == null) ? 0 : pedido.hashCode());
 		long temp;
-		temp = Double.doubleToLongBits(valroTotal);
+		temp = Double.doubleToLongBits(valorTotal);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
@@ -55,12 +105,17 @@ public class Carrinho {
 		Carrinho other = (Carrinho) obj;
 		if (id != other.id)
 			return false;
-		if (items == null) {
-			if (other.items != null)
+		if (itens == null) {
+			if (other.itens != null)
 				return false;
-		} else if (!items.equals(other.items))
+		} else if (!itens.equals(other.itens))
 			return false;
-		if (Double.doubleToLongBits(valroTotal) != Double.doubleToLongBits(other.valroTotal))
+		if (pedido == null) {
+			if (other.pedido != null)
+				return false;
+		} else if (!pedido.equals(other.pedido))
+			return false;
+		if (Double.doubleToLongBits(valorTotal) != Double.doubleToLongBits(other.valorTotal))
 			return false;
 		return true;
 	}
