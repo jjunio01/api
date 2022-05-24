@@ -1,22 +1,58 @@
 package com.github.jjunio01.model;
 
+import java.io.Serializable;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * @author JJunio
  *
  */
-public class Pedido {
+@Entity(name = "PEDIDO")
+public class Pedido implements Serializable {
 
+	private static final long serialVersionUID = 4803013804214610462L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_pedido")
 	private int id;
+
+	@Column(name = "valor_total")
 	private double valorTotal;
+
+	@Temporal(TemporalType.DATE)
 	private Date data;
-	private STATUS status =  STATUS.EM_APROVACÃO;
+
+	@Enumerated(EnumType.STRING)
+	private STATUS status = STATUS.EM_APROVACÃO;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_carrinho")
 	private Carrinho carrinho;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_endereco")
 	private Endereco endereco;
 
-	public int getId() {
-		return id;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_cliente")
+	private Cliente cliente;
+
+	public Pedido() {
+
 	}
 
 	public double getValorTotal() {
@@ -59,11 +95,28 @@ public class Pedido {
 		this.endereco = endereco;
 	}
 
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public int getId() {
+		return id;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((carrinho == null) ? 0 : carrinho.hashCode());
+		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
 		result = prime * result + ((endereco == null) ? 0 : endereco.hashCode());
 		result = prime * result + id;
@@ -87,6 +140,11 @@ public class Pedido {
 			if (other.carrinho != null)
 				return false;
 		} else if (!carrinho.equals(other.carrinho))
+			return false;
+		if (cliente == null) {
+			if (other.cliente != null)
+				return false;
+		} else if (!cliente.equals(other.cliente))
 			return false;
 		if (data == null) {
 			if (other.data != null)
