@@ -43,6 +43,13 @@ public class Cliente implements Serializable {
 		this.pedidos = new ArrayList<Pedido>();
 	}
 
+	public Cliente(String codigo, String nome, String senha, String email) {
+		this.codigo = codigo;
+		this.nome = nome;
+		this.senha = senha;
+		this.email = email;
+	}
+
 	public List<Endereco> getEnderecos() {
 		return enderecos;
 	}
