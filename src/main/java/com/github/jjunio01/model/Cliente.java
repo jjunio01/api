@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,10 +27,10 @@ public class Cliente implements Serializable {
 	@Column(name = "id_cliente")
 	private int id;
 
-	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Endereco> enderecos;
 
-	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Pedido> pedidos;
 
 	private String codigo;
@@ -41,6 +42,21 @@ public class Cliente implements Serializable {
 	public Cliente() {
 		this.enderecos = new ArrayList<Endereco>();
 		this.pedidos = new ArrayList<Pedido>();
+	}
+
+	public Cliente(String codigo, String nome, String senha, String email) {
+		this.codigo = codigo;
+		this.nome = nome;
+		this.senha = senha;
+		this.email = email;
+	}
+
+	public Cliente(String codigo, String nome, String senha, String email, String telefone) {
+		this.codigo = codigo;
+		this.telefone = telefone;
+		this.nome = nome;
+		this.senha = senha;
+		this.email = email;
 	}
 
 	public List<Endereco> getEnderecos() {
@@ -170,5 +186,4 @@ public class Cliente implements Serializable {
 			return false;
 		return true;
 	}
-
 }
