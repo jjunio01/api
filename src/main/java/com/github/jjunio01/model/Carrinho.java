@@ -34,7 +34,7 @@ public class Carrinho implements Serializable {
 	@OneToMany(mappedBy = "carrinho", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ItemProduto> itens;
 
-	@OneToOne(mappedBy = "carrinho", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "carrinho", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Pedido pedido;
 
 	public Carrinho() {
