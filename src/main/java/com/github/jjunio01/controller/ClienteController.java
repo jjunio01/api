@@ -52,7 +52,7 @@ public class ClienteController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<ClienteDTO> recuperarPorId(@PathVariable int id, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<ClienteDTO> recuperarPorId(@PathVariable int id) {
 		Optional<Cliente> cliente = repositoryCliente.findById(id);
 		if (cliente.isPresent()) {
 			return ResponseEntity.ok(new ClienteDTO(cliente.get()));
