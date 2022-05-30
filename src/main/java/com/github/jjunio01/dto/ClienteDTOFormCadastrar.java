@@ -8,8 +8,8 @@ import com.github.jjunio01.model.Cliente;
  * @author JJunio
  *
  */
-public class ClienteDTOFormCadastrar {
-
+public class ClienteDTOFormCadastrar{
+	
 	@NotNull
 	private String nome;
 	@NotNull
@@ -27,6 +27,10 @@ public class ClienteDTOFormCadastrar {
 		this.senha = senha;
 		this.email = email;
 		this.telefone = telefone;
+	}
+
+	public ClienteDTOFormCadastrar() {
+
 	}
 
 	public String getNome() {
