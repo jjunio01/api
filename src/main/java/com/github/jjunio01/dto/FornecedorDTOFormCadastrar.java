@@ -12,18 +12,21 @@ public class FornecedorDTOFormCadastrar {
 
 	@NotNull
 	private String cnpj;
-	
+
 	@NotNull
 	private String nomeFantasia;
-	
+
 	private String razaoSocial;
 	private String telefone;
+	private String senha;
 
-	public FornecedorDTOFormCadastrar(String cnpj, String nomeFantasia, String razaoSocial, String telefone) {
+	public FornecedorDTOFormCadastrar(String cnpj, String nomeFantasia, String razaoSocial, String telefone,
+			String senha) {
 		this.cnpj = cnpj;
 		this.nomeFantasia = nomeFantasia;
 		this.razaoSocial = razaoSocial;
 		this.telefone = telefone;
+		this.senha = senha;
 	}
 
 	public String getCnpj() {
@@ -58,7 +61,15 @@ public class FornecedorDTOFormCadastrar {
 		this.telefone = telefone;
 	}
 
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
 	public Fornecedor converter() {
-		return new Fornecedor(this.nomeFantasia, this.razaoSocial, this.cnpj, this.telefone);
+		return new Fornecedor(this.nomeFantasia, this.razaoSocial, this.cnpj, this.telefone, this.senha);
 	}
 }
