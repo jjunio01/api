@@ -38,16 +38,18 @@ public class Fornecedor implements Serializable {
 
 	private String cnpj;
 	private String telefone;
+	private String senha;
 
 	public Fornecedor() {
 
 	}
-	
-	public Fornecedor(String nomeFantasia, String razaoSocial, String cnpj, String telefone) {
+
+	public Fornecedor(String nomeFantasia, String razaoSocial, String cnpj, String telefone, String senha) {
 		this.nomeFantasia = nomeFantasia;
 		this.razaoSocial = razaoSocial;
 		this.cnpj = cnpj;
 		this.telefone = telefone;
+		this.senha = senha;
 	}
 
 	public String getNomeFantasia() {
@@ -98,6 +100,14 @@ public class Fornecedor implements Serializable {
 		this.telefone = telefone;
 	}
 
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -116,6 +126,7 @@ public class Fornecedor implements Serializable {
 		result = prime * result + id;
 		result = prime * result + ((nomeFantasia == null) ? 0 : nomeFantasia.hashCode());
 		result = prime * result + ((razaoSocial == null) ? 0 : razaoSocial.hashCode());
+		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
 		result = prime * result + ((telefone == null) ? 0 : telefone.hashCode());
 		return result;
 	}
@@ -155,6 +166,11 @@ public class Fornecedor implements Serializable {
 			if (other.razaoSocial != null)
 				return false;
 		} else if (!razaoSocial.equals(other.razaoSocial))
+			return false;
+		if (senha == null) {
+			if (other.senha != null)
+				return false;
+		} else if (!senha.equals(other.senha))
 			return false;
 		if (telefone == null) {
 			if (other.telefone != null)

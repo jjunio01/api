@@ -1,12 +1,11 @@
 drop table if exists pedido;
 drop table if exists endereco;
 drop table if exists item_produto;
-drop table if exists produto;
 drop table if exists estoque;
+drop table if exists produto;
 drop table if exists fornecedor;
 drop table if exists cliente;
 drop table if exists carrinho;
-
 
 create table carrinho (
        id_carrinho integer not null auto_increment,
@@ -52,6 +51,7 @@ create table fornecedor (
 	nome_fantasia varchar(255) not null,
 	razao_social varchar(255),
 	telefone varchar(11),
+    senha varchar(255) not null,
 	primary key (id_fornecedor)
 ) engine=InnoDB;
     
