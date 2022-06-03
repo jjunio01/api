@@ -5,6 +5,11 @@ import java.util.stream.Collectors;
 
 import com.github.jjunio01.model.Fornecedor;
 
+/**
+ * @author JJunio
+ *
+ */
+
 public class FornecedorDTO {
 
 	private int id;

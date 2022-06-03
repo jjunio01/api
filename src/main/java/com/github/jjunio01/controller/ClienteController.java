@@ -85,4 +85,18 @@ public class ClienteController {
 		return ResponseEntity.notFound().build();
 	}
 
+	@PutMapping("/{id}/enderecos")
+	@Transactional
+	public ResponseEntity<ClienteDTO> atualizarEnderecos(@PathVariable int id,
+			@RequestBody @Valid ClienteDTOFormAtualizar clienteFormAtualizar) {
+
+		Optional<Cliente> clienteBD = repositoryCliente.findById(id);
+		if (clienteBD.isPresent()) {
+			Cliente cliente = clienteFormAtualizar.atualizar(repositoryCliente, id);
+			return ResponseEntity.ok(new ClienteDTO(cliente));
+		}
+		return ResponseEntity.notFound().build();
+
+	}
+
 }
