@@ -43,6 +43,13 @@ public class Produto implements Serializable {
 		this.itens = new ArrayList<ItemProduto>();
 	}
 
+	public Produto(String nome, double valor, String marca, String descricao) {
+		this.nome = nome;
+		this.valor = valor;
+		this.marca = marca;
+		this.descricao = descricao;
+	}
+
 	public List<ItemProduto> getItens() {
 		return itens;
 	}

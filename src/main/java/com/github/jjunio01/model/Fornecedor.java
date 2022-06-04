@@ -1,6 +1,7 @@
 package com.github.jjunio01.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -31,10 +32,10 @@ public class Fornecedor implements Serializable {
 	private String razaoSocial;
 
 	@OneToMany(mappedBy = "fornecedor")
-	private List<Endereco> enderecos;
+	private List<Endereco> enderecos = new ArrayList<Endereco>();
 
 	@OneToMany(mappedBy = "fornecedor")
-	private List<Estoque> estoques;
+	private List<Estoque> estoques = new ArrayList<Estoque>();
 
 	private String cnpj;
 	private String telefone;
@@ -72,16 +73,8 @@ public class Fornecedor implements Serializable {
 		return enderecos;
 	}
 
-	public void setEnderecos(List<Endereco> enderecos) {
-		this.enderecos = enderecos;
-	}
-
 	public List<Estoque> getEstoques() {
 		return estoques;
-	}
-
-	public void setEstoques(List<Estoque> estoques) {
-		this.estoques = estoques;
 	}
 
 	public String getCnpj() {
@@ -114,6 +107,26 @@ public class Fornecedor implements Serializable {
 
 	public int getId() {
 		return id;
+	}
+
+	public void adicionarEstoque(Estoque novoEstoque) {
+		this.estoques.add(novoEstoque);
+		novoEstoque.setFornecedor(this);
+	}
+
+	public void adicionarEndereco(Endereco novoEndereco) {
+		this.enderecos.add(novoEndereco);
+		novoEndereco.setFornecedor(this);
+	}
+
+	public void removerEstoque(Estoque estoque) {
+		this.estoques.remove(estoque);
+		estoque.setFornecedor(null);
+	}
+
+	public void removerEndereco(Endereco endereco) {
+		this.enderecos.remove(endereco);
+		endereco.setFornecedor(null);
 	}
 
 	@Override

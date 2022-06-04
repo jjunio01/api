@@ -39,6 +39,11 @@ public class Estoque implements Serializable {
 
 	}
 
+	public Estoque(int quantidade, Produto novoProduto) {
+		this.quantidade = quantidade;
+		this.produto = novoProduto;
+	}
+
 	public Produto getProduto() {
 		return produto;
 	}
