@@ -1,4 +1,4 @@
-package com.github.jjunio01.dto;
+package com.github.jjunio01.dto.form.cadastrar;
 
 import javax.validation.constraints.NotNull;
 
@@ -8,7 +8,7 @@ import com.github.jjunio01.model.Fornecedor;
  * @author JJunio
  *
  */
-public class FornecedorDTOFormCadastrar {
+public class FornecedorDTOFormCadastrar implements DTOFormCadastrar<Fornecedor> {
 
 	@NotNull
 	private String cnpj;
@@ -69,6 +69,7 @@ public class FornecedorDTOFormCadastrar {
 		this.senha = senha;
 	}
 
+	@Override
 	public Fornecedor converter() {
 		return new Fornecedor(this.nomeFantasia, this.razaoSocial, this.cnpj, this.telefone, this.senha);
 	}

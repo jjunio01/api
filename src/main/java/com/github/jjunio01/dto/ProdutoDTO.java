@@ -27,6 +27,10 @@ public class ProdutoDTO {
 
 	}
 
+	public ProdutoDTO() {
+		super();
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -50,6 +54,10 @@ public class ProdutoDTO {
 	public static List<ProdutoDTO> converter(List<Produto> produtos) {
 
 		return produtos.stream().map(ProdutoDTO::new).collect(Collectors.toList());
+	}
+
+	public Produto converter() {
+		return new Produto(this.nome, this.valor, this.marca, this.descricao);
 	}
 
 }

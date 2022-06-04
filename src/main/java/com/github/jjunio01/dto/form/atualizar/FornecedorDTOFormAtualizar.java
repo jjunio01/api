@@ -1,4 +1,4 @@
-package com.github.jjunio01.dto;
+package com.github.jjunio01.dto.form.atualizar;
 
 import com.github.jjunio01.model.Fornecedor;
 

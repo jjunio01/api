@@ -1,14 +1,19 @@
-package com.github.jjunio01.dto;
+package com.github.jjunio01.dto.form.cadastrar;
+
+import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
+import com.github.jjunio01.model.Cliente;
 import com.github.jjunio01.model.Endereco;
+import com.github.jjunio01.repository.ClienteRepository;
+import com.github.jjunio01.repository.EnderecoRepository;
 
 /**
  * @author JJunio
  *
  */
-public class EnderecoDTOFormCadastrar {
+public class EnderecoDTOFormCadastrar implements DTOFormCadastrar<Endereco> {
 
 	@NotNull
 	private String cidade;
@@ -24,9 +29,7 @@ public class EnderecoDTOFormCadastrar {
 
 	private String referencia;
 
-	public EnderecoDTOFormCadastrar(@NotNull String cidade, @NotNull String bairro, @NotNull String rua,
-			@NotNull String numero, @NotNull String referencia) {
-		super();
+	public EnderecoDTOFormCadastrar(String cidade, String bairro, String rua, String numero, String referencia) {
 		this.cidade = cidade;
 		this.bairro = bairro;
 		this.rua = rua;
@@ -74,8 +77,21 @@ public class EnderecoDTOFormCadastrar {
 		this.referencia = referencia;
 	}
 
+	@Override
 	public Endereco converter() {
 		return new Endereco(this.cidade, this.bairro, this.rua, this.numero, this.referencia);
+	}
+
+	public Cliente incluirEndereco(ClienteRepository repositoryCliente, int id, EnderecoRepository repositoryEndereco) {
+		Cliente cliente = null;
+		Optional<Cliente> consultaCliente = repositoryCliente.findById(id);
+		if (consultaCliente.isPresent()) {
+			Cliente clienteBD = consultaCliente.get();
+			Endereco enderecoBD = repositoryEndereco.save(this.converter());
+			clienteBD.adicionarEndereco(enderecoBD);
+			return clienteBD;
+		}
+		return cliente;
 	}
 
 }

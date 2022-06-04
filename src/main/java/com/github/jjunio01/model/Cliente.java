@@ -7,7 +7,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,7 +26,7 @@ public class Cliente implements Serializable {
 	@Column(name = "id_cliente")
 	private int id;
 
-	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Endereco> enderecos;
 
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -63,16 +62,8 @@ public class Cliente implements Serializable {
 		return enderecos;
 	}
 
-	public void setEnderecos(List<Endereco> enderecos) {
-		this.enderecos = enderecos;
-	}
-
 	public List<Pedido> getPedidos() {
 		return pedidos;
-	}
-
-	public void setPedidos(List<Pedido> pedidos) {
-		this.pedidos = pedidos;
 	}
 
 	public String getCodigo() {
@@ -121,6 +112,26 @@ public class Cliente implements Serializable {
 
 	public int getId() {
 		return id;
+	}
+
+	public void adicionarEndereco(Endereco novoEndereco) {
+		this.enderecos.add(novoEndereco);
+		novoEndereco.setCliente(this);
+	}
+
+	public void adicionarPedido(Pedido novoPedido) {
+		this.pedidos.add(novoPedido);
+		novoPedido.setCliente(this);
+	}
+
+	public void removeEndereco(Endereco novoEndereco) {
+		this.enderecos.remove(novoEndereco);
+		novoEndereco.setCliente(null);
+	}
+
+	public void removePedido(Pedido novoPedido) {
+		this.pedidos.remove(novoPedido);
+		novoPedido.setCliente(null);
 	}
 
 	@Override

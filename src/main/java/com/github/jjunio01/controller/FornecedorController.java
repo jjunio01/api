@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.github.jjunio01.dto.FornecedorDTO;
-import com.github.jjunio01.dto.FornecedorDTOFormAtualizar;
-import com.github.jjunio01.dto.FornecedorDTOFormCadastrar;
+import com.github.jjunio01.dto.form.atualizar.FornecedorDTOFormAtualizar;
+import com.github.jjunio01.dto.form.cadastrar.FornecedorDTOFormCadastrar;
 import com.github.jjunio01.model.Fornecedor;
 import com.github.jjunio01.repository.FornecedorRepository;
 
@@ -31,11 +30,19 @@ import com.github.jjunio01.repository.FornecedorRepository;
  */
 @RestController
 @RequestMapping("/fornecedores")
-public class FornecedorController {
+public class FornecedorController
+		implements RestControllerInterface<FornecedorDTO, FornecedorDTOFormCadastrar, FornecedorDTOFormAtualizar> {
 
 	@Autowired
 	private FornecedorRepository repositoryFornecedor;
 
+	@Override
+	@GetMapping
+	public List<FornecedorDTO> listarTodos() {
+		return FornecedorDTO.converter(repositoryFornecedor.findAll());
+	}
+
+	@Override
 	@PostMapping
 	@Transactional
 	public ResponseEntity<FornecedorDTO> inserir(@RequestBody @Valid FornecedorDTOFormCadastrar formFornecedor,
@@ -48,13 +55,9 @@ public class FornecedorController {
 		return ResponseEntity.created(uri).body(new FornecedorDTO(novoFornecedor));
 	}
 
-	@GetMapping
-	public List<FornecedorDTO> listarTodos() {
-		return FornecedorDTO.converter(repositoryFornecedor.findAll());
-	}
-
+	@Override
 	@GetMapping("/{id}")
-	public ResponseEntity<FornecedorDTO> recuperarPorID(@PathVariable int id) {
+	public ResponseEntity<FornecedorDTO> recuperarPorId(int id) {
 		Optional<Fornecedor> fornecedorConsulta = repositoryFornecedor.findById(id);
 		if (fornecedorConsulta.isPresent()) {
 			Fornecedor fornecedorBd = fornecedorConsulta.get();
@@ -63,22 +66,10 @@ public class FornecedorController {
 		return ResponseEntity.notFound().build();
 	}
 
-	@DeleteMapping("/{id}")
-	@Transactional
-	public ResponseEntity<FornecedorDTO> deletar(@PathVariable int id) {
-		Optional<Fornecedor> fornecedorConsulta = repositoryFornecedor.findById(id);
-		if (fornecedorConsulta.isPresent()) {
-			repositoryFornecedor.deleteById(id);
-			return ResponseEntity.ok().build();
-		}
-		return ResponseEntity.notFound().build();
-	}
-
+	@Override
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<FornecedorDTO> atualizar(@RequestBody @Valid FornecedorDTOFormAtualizar formFornecedor,
-			@PathVariable int id) {
-
+	public ResponseEntity<FornecedorDTO> atualizar(int id, @Valid FornecedorDTOFormAtualizar formFornecedor) {
 		Optional<Fornecedor> fornecedorConsulta = repositoryFornecedor.findById(id);
 		if (fornecedorConsulta.isPresent()) {
 			Fornecedor fornecedorBD = fornecedorConsulta.get();
@@ -87,4 +78,16 @@ public class FornecedorController {
 		return ResponseEntity.notFound().build();
 	}
 
+	@Override
+	@DeleteMapping("/{id}")
+	@Transactional
+	public ResponseEntity<FornecedorDTO> remover(int id) {
+		Optional<Fornecedor> fornecedorConsulta = repositoryFornecedor.findById(id);
+		if (fornecedorConsulta.isPresent()) {
+			repositoryFornecedor.deleteById(id);
+			return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.notFound().build();
+
+	}
 }

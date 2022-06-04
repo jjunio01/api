@@ -1,43 +1,24 @@
-package com.github.jjunio01.dto;
+package com.github.jjunio01.dto.form.atualizar;
+
+import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
 import com.github.jjunio01.model.Produto;
+import com.github.jjunio01.repository.ProdutoRepository;
 
 /**
  * @author JJunio
  *
  */
-public class ProdutoDTOFormCadastrar {
+public class ProdutoDTOFormAtualizar {
 
-	@NotNull
-	private String nome;
 	@NotNull
 	private double valor;
 
 	private String marca;
 
 	private String descricao;
-	
-
-	public ProdutoDTOFormCadastrar(String nome, double valor, String marca, String descricao) {
-		this.nome = nome;
-		this.valor = valor;
-		this.marca = marca;
-		this.descricao = descricao;
-	}
-
-	public ProdutoDTOFormCadastrar() {
-
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
 
 	public double getValor() {
 		return valor;
@@ -63,9 +44,18 @@ public class ProdutoDTOFormCadastrar {
 		this.descricao = descricao;
 	}
 
-	public Produto converter() {
+	public Produto atualizar(ProdutoRepository repositoryProduto, int id) {
+		Produto produtoBD = null;
+		Optional<Produto> produtoConsulta = repositoryProduto.findById(id);
 
-		return new Produto(this.nome, this.valor, this.marca, this.descricao);
+		if (produtoConsulta.isPresent()) {
+			produtoBD = produtoConsulta.get();
+			produtoBD.setDescricao(this.descricao);
+			produtoBD.setMarca(this.marca);
+			produtoBD.setValor(this.valor);
+		}
+
+		return produtoBD;
 	}
 
 }

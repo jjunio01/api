@@ -1,19 +1,20 @@
-package com.github.jjunio01.dto;
+package com.github.jjunio01.dto.form.atualizar;
+
+import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
 import com.github.jjunio01.model.Cliente;
+import com.github.jjunio01.repository.ClienteRepository;
 
 /**
  * @author JJunio
  *
  */
-public class ClienteDTOFormCadastrar{
-	
+public class ClienteDTOFormAtualizar {
+
 	@NotNull
 	private String nome;
-	@NotNull
-	private String codigo;
 	@NotNull
 	private String senha;
 	@NotNull
@@ -21,32 +22,12 @@ public class ClienteDTOFormCadastrar{
 
 	private String telefone;
 
-	public ClienteDTOFormCadastrar(String nome, String codigo, String senha, String email, String telefone) {
-		this.nome = nome;
-		this.codigo = codigo;
-		this.senha = senha;
-		this.email = email;
-		this.telefone = telefone;
-	}
-
-	public ClienteDTOFormCadastrar() {
-
-	}
-
 	public String getNome() {
 		return nome;
 	}
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
 	}
 
 	public String getSenha() {
@@ -73,8 +54,19 @@ public class ClienteDTOFormCadastrar{
 		this.telefone = telefone;
 	}
 
-	public Cliente converter() {
-		return new Cliente(this.codigo, this.nome, this.senha, this.email, this.telefone);
+	public Cliente atualizar(ClienteRepository repositoryCliente, int id) {
+
+		Optional<Cliente> clienteConsulta = repositoryCliente.findById(id);
+		Cliente clienteBD = null;
+		if (clienteConsulta.isPresent()) {
+			clienteBD = clienteConsulta.get();
+			clienteBD.setNome(this.nome);
+			clienteBD.setSenha(this.senha);
+			clienteBD.setEmail(this.email);
+			clienteBD.setTelefone(this.telefone);
+			return clienteBD;
+		}
+		return clienteBD;
 	}
 
 }

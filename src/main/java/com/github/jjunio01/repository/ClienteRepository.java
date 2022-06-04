@@ -8,6 +8,6 @@ import com.github.jjunio01.model.Cliente;
  * @author JJunio
  *
  */
-public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
+public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 
 }
