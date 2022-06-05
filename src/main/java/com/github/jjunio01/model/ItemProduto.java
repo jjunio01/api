@@ -30,6 +30,12 @@ public class ItemProduto implements Serializable {
 
 	}
 
+	public ItemProduto(Produto produto, int quantidade) {
+		this.produto = produto;
+		this.quantidade = quantidade;
+		this.valor = produto.getValor();
+	}
+
 	public Produto getProduto() {
 		return produto;
 	}

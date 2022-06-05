@@ -111,9 +111,7 @@ public class Produto implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
-		result = prime * result + ((estoque == null) ? 0 : estoque.hashCode());
 		result = prime * result + id;
-		result = prime * result + ((itens == null) ? 0 : itens.hashCode());
 		result = prime * result + ((marca == null) ? 0 : marca.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		long temp;
@@ -136,17 +134,7 @@ public class Produto implements Serializable {
 				return false;
 		} else if (!descricao.equals(other.descricao))
 			return false;
-		if (estoque == null) {
-			if (other.estoque != null)
-				return false;
-		} else if (!estoque.equals(other.estoque))
-			return false;
 		if (id != other.id)
-			return false;
-		if (itens == null) {
-			if (other.itens != null)
-				return false;
-		} else if (!itens.equals(other.itens))
 			return false;
 		if (marca == null) {
 			if (other.marca != null)

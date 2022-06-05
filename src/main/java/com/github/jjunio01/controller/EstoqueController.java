@@ -107,6 +107,24 @@ public class EstoqueController implements RestControllerInterface<EstoqueDTO, Es
 		return ResponseEntity.notFound().build();
 	}
 
+	@PutMapping("/estoques/produto/{id}")
+	public ResponseEntity<EstoqueDTO> atualizarPorIdProduto(@PathVariable int id, @RequestBody Integer quantidade) {
+
+		if (quantidade < 0) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
+
+		Optional<Estoque> consultaEstoqueBD = repositoryEstoque.findByProdutoId(id);
+
+		if (consultaEstoqueBD.isPresent()) {
+			Estoque estoqueBD = consultaEstoqueBD.get();
+			estoqueBD.setQuantidade(quantidade);
+			repositoryEstoque.flush();
+			return ResponseEntity.ok(new EstoqueDTO(estoqueBD));
+		}
+		return ResponseEntity.notFound().build();
+	}
+
 	@Override
 	@DeleteMapping("/estoques/{id}")
 	public ResponseEntity<EstoqueDTO> remover(@PathVariable int id) {
@@ -120,7 +138,7 @@ public class EstoqueController implements RestControllerInterface<EstoqueDTO, Es
 		return ResponseEntity.notFound().build();
 	}
 
-	@RequestMapping("/{id}/estoques")
+	@GetMapping("/{id}/estoques")
 	public List<EstoqueDTO> listarTodosPorFornecedor(@PathVariable int id) {
 		return EstoqueDTO.converter(repositoryEstoque.findByFornecedorId(id));
 	}

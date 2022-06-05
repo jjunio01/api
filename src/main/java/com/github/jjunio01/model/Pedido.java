@@ -115,10 +115,7 @@ public class Pedido implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((carrinho == null) ? 0 : carrinho.hashCode());
-		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
-		result = prime * result + ((endereco == null) ? 0 : endereco.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		long temp;
@@ -136,25 +133,10 @@ public class Pedido implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Pedido other = (Pedido) obj;
-		if (carrinho == null) {
-			if (other.carrinho != null)
-				return false;
-		} else if (!carrinho.equals(other.carrinho))
-			return false;
-		if (cliente == null) {
-			if (other.cliente != null)
-				return false;
-		} else if (!cliente.equals(other.cliente))
-			return false;
 		if (data == null) {
 			if (other.data != null)
 				return false;
 		} else if (!data.equals(other.data))
-			return false;
-		if (endereco == null) {
-			if (other.endereco != null)
-				return false;
-		} else if (!endereco.equals(other.endereco))
 			return false;
 		if (id != other.id)
 			return false;

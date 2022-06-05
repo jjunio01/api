@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,7 +31,7 @@ public class Endereco implements Serializable {
 	@ManyToOne
 	private Fornecedor fornecedor;
 
-	@OneToOne(mappedBy = "endereco", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "endereco", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Pedido pedido;
 
 	private String cidade;
