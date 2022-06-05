@@ -6,6 +6,15 @@ package com.github.jjunio01.model;
  */
 public enum STATUS {
 
-	EM_APROVACÃO, APROVADO, EM_ENTREGA, ENTREGUE, CANCELADO
+	EM_APROVACÃO, APROVADO, EM_ENTREGA, ENTREGUE, CANCELADO;
+
+	public static STATUS validar(String novoStatus) {
+		try {
+			return STATUS.valueOf(novoStatus.toUpperCase());
+		} catch (Exception e) {
+
+		}
+		return null;
+	}
 
 }

@@ -10,7 +10,10 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -38,15 +41,14 @@ public class PedidoController
 
 	@Autowired
 	private CarrinhoController controllerCarrinho;
-	
-	
+
 	@Autowired
 	private PedidoRepository repositoryPedido;
 
 	@Override
+	@GetMapping
 	public List<PedidoDTO> listarTodos() {
-		// TODO Auto-generated method stub
-		return null;
+		return PedidoDTO.converter(repositoryPedido.findAll());
 	}
 
 	@Override
@@ -69,30 +71,55 @@ public class PedidoController
 		novoPedido.setCliente(consultaClienteBD.get());
 		novoPedido.setEndereco(consultaClienteBD.get().getEnderecos().get(0));
 		novoPedido.setData(new Date());
-		novoPedido.setStatus(STATUS.EM_APROVACÃO);
-		
+
 		repositoryPedido.saveAndFlush(novoPedido);
-		
+
 		URI uri = uriBuilder.path("/pedidos/{id}").buildAndExpand(novoPedido.getId()).toUri();
 		return ResponseEntity.created(uri).body(new PedidoDTO(novoPedido));
 	}
 
 	@Override
+	@GetMapping("/{id}")
 	public ResponseEntity<PedidoDTO> recuperarPorId(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Pedido> consultaPedidoBD = repositoryPedido.findById(id);
+		if (consultaPedidoBD.isPresent()) {
+			Pedido pedidoBD = consultaPedidoBD.get();
+			return ResponseEntity.ok(new PedidoDTO(pedidoBD));
+		}
+		return ResponseEntity.notFound().build();
 	}
 
 	@Override
-	public ResponseEntity<PedidoDTO> atualizar(int id, @Valid PedidoDTOFormCadastrarAtualizar formG) {
-		// TODO Auto-generated method stub
-		return null;
+	@PutMapping("/{id}")
+	public ResponseEntity<PedidoDTO> atualizar(int id, @Valid PedidoDTOFormCadastrarAtualizar formAtualizarPedido) {
+		STATUS novoStatus = STATUS.validar(formAtualizarPedido.getStatus());
+		if (novoStatus != null) {
+			if (novoStatus == STATUS.CANCELADO) {
+				return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			}
+			Optional<Pedido> consultaPedidoBD = repositoryPedido.findById(id);
+			if (consultaPedidoBD.isPresent()) {
+				Pedido pedidoBD = consultaPedidoBD.get();
+				pedidoBD.setStatus(novoStatus);
+				repositoryPedido.flush();
+				return ResponseEntity.ok().build();
+			}
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	}
 
 	@Override
+	@DeleteMapping("/{id}")
 	public ResponseEntity<PedidoDTO> remover(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			repositoryPedido.deleteById(id);
+			return ResponseEntity.noContent().build();
+		} catch (Exception e) {
+
+		}
+
+		return ResponseEntity.notFound().build();
 	}
 
 }

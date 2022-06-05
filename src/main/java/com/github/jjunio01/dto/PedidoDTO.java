@@ -1,5 +1,8 @@
 package com.github.jjunio01.dto;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.github.jjunio01.model.Pedido;
 
 /**
@@ -28,6 +31,10 @@ public class PedidoDTO {
 
 	public double getValor() {
 		return valor;
+	}
+
+	public static List<PedidoDTO> converter(List<Pedido> listaPedidos) {
+		return listaPedidos.stream().map(PedidoDTO::new).collect(Collectors.toList());
 	}
 
 }
