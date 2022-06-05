@@ -120,7 +120,7 @@ public class EstoqueController implements RestControllerInterface<EstoqueDTO, Es
 		return ResponseEntity.notFound().build();
 	}
 
-	@RequestMapping("/{id}/estoques")
+	@GetMapping("/{id}/estoques")
 	public List<EstoqueDTO> listarTodosPorFornecedor(@PathVariable int id) {
 		return EstoqueDTO.converter(repositoryEstoque.findByFornecedorId(id));
 	}

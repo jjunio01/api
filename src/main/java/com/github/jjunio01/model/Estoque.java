@@ -76,13 +76,15 @@ public class Estoque implements Serializable {
 		return id;
 	}
 
+	public void retirarEstoque(int quantidade) {
+		setQuantidade(this.quantidade - quantidade);
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((fornecedor == null) ? 0 : fornecedor.hashCode());
 		result = prime * result + id;
-		result = prime * result + ((produto == null) ? 0 : produto.hashCode());
 		result = prime * result + quantidade;
 		return result;
 	}
@@ -96,17 +98,7 @@ public class Estoque implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Estoque other = (Estoque) obj;
-		if (fornecedor == null) {
-			if (other.fornecedor != null)
-				return false;
-		} else if (!fornecedor.equals(other.fornecedor))
-			return false;
 		if (id != other.id)
-			return false;
-		if (produto == null) {
-			if (other.produto != null)
-				return false;
-		} else if (!produto.equals(other.produto))
 			return false;
 		if (quantidade != other.quantidade)
 			return false;
