@@ -4,12 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  * @author JJunio
@@ -39,18 +42,20 @@ public class Fornecedor implements Serializable {
 
 	private String cnpj;
 	private String telefone;
-	private String senha;
+
+	@OneToOne(cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "usuario_id_usuario")
+	private Usuario usuario;
 
 	public Fornecedor() {
 
 	}
 
-	public Fornecedor(String nomeFantasia, String razaoSocial, String cnpj, String telefone, String senha) {
+	public Fornecedor(String nomeFantasia, String razaoSocial, String cnpj, String telefone) {
 		this.nomeFantasia = nomeFantasia;
 		this.razaoSocial = razaoSocial;
 		this.cnpj = cnpj;
 		this.telefone = telefone;
-		this.senha = senha;
 	}
 
 	public String getNomeFantasia() {
@@ -93,12 +98,12 @@ public class Fornecedor implements Serializable {
 		this.telefone = telefone;
 	}
 
-	public String getSenha() {
-		return senha;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public static long getSerialversionuid() {
@@ -134,12 +139,9 @@ public class Fornecedor implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((cnpj == null) ? 0 : cnpj.hashCode());
-		result = prime * result + ((enderecos == null) ? 0 : enderecos.hashCode());
-		result = prime * result + ((estoques == null) ? 0 : estoques.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((nomeFantasia == null) ? 0 : nomeFantasia.hashCode());
 		result = prime * result + ((razaoSocial == null) ? 0 : razaoSocial.hashCode());
-		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
 		result = prime * result + ((telefone == null) ? 0 : telefone.hashCode());
 		return result;
 	}
@@ -158,16 +160,6 @@ public class Fornecedor implements Serializable {
 				return false;
 		} else if (!cnpj.equals(other.cnpj))
 			return false;
-		if (enderecos == null) {
-			if (other.enderecos != null)
-				return false;
-		} else if (!enderecos.equals(other.enderecos))
-			return false;
-		if (estoques == null) {
-			if (other.estoques != null)
-				return false;
-		} else if (!estoques.equals(other.estoques))
-			return false;
 		if (id != other.id)
 			return false;
 		if (nomeFantasia == null) {
@@ -179,11 +171,6 @@ public class Fornecedor implements Serializable {
 			if (other.razaoSocial != null)
 				return false;
 		} else if (!razaoSocial.equals(other.razaoSocial))
-			return false;
-		if (senha == null) {
-			if (other.senha != null)
-				return false;
-		} else if (!senha.equals(other.senha))
 			return false;
 		if (telefone == null) {
 			if (other.telefone != null)

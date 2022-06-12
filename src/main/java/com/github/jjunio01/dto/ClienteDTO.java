@@ -20,7 +20,7 @@ public class ClienteDTO {
 		this.id = cliente.getId();
 		this.codigo = cliente.getCodigo();
 		this.nome = cliente.getNome();
-		this.email = cliente.getEmail();
+		this.email = cliente.getUsuario().getEmail();
 	}
 
 	public int getId() {

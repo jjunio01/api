@@ -25,8 +25,10 @@ import com.github.jjunio01.dto.form.cadastrar.ClienteDTOFormCadastrar;
 import com.github.jjunio01.dto.form.cadastrar.EnderecoDTOFormCadastrar;
 import com.github.jjunio01.model.Cliente;
 import com.github.jjunio01.model.Endereco;
+import com.github.jjunio01.model.Usuario;
 import com.github.jjunio01.repository.ClienteRepository;
 import com.github.jjunio01.repository.EnderecoRepository;
+import com.github.jjunio01.repository.UsuarioRepository;
 
 /**
  * @author JJunio
@@ -43,6 +45,9 @@ public class ClienteController
 	@Autowired
 	private EnderecoRepository repositoryEndereco;
 
+	@Autowired
+	private UsuarioRepository repositoryUsuario;
+
 	@Override
 	@GetMapping
 	public List<ClienteDTO> listarTodos() {
@@ -54,7 +59,9 @@ public class ClienteController
 	@Transactional
 	public ResponseEntity<ClienteDTO> inserir(@Valid ClienteDTOFormCadastrar clienteForm,
 			UriComponentsBuilder uriBuilder) {
+		Usuario novoUsuario = repositoryUsuario.save(clienteForm.converterUsuario());
 		Cliente novoCliente = clienteForm.converter();
+		novoCliente.setUsuario(novoUsuario);
 		repositoryCliente.save(novoCliente);
 		URI uri = uriBuilder.path("/clientes/{id}").buildAndExpand(novoCliente.getId()).toUri();
 		return ResponseEntity.created(uri).body(new ClienteDTO(novoCliente));
@@ -73,10 +80,12 @@ public class ClienteController
 	@Override
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<ClienteDTO> atualizar(@PathVariable int id, @Valid ClienteDTOFormAtualizar clienteFormAtualizar) {
+	public ResponseEntity<ClienteDTO> atualizar(@PathVariable int id,
+			@Valid ClienteDTOFormAtualizar clienteFormAtualizar) {
 		Optional<Cliente> clienteBD = repositoryCliente.findById(id);
 		if (clienteBD.isPresent()) {
-			Cliente cliente = clienteFormAtualizar.atualizar(repositoryCliente, id);
+			Cliente cliente = clienteFormAtualizar.atualizar(clienteBD.get());
+			repositoryCliente.flush();
 			return ResponseEntity.ok(new ClienteDTO(cliente));
 		}
 		return ResponseEntity.notFound().build();

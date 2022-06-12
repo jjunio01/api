@@ -5,6 +5,7 @@ drop table if exists estoque;
 drop table if exists produto;
 drop table if exists fornecedor;
 drop table if exists cliente;
+drop table if exists usuario;
 drop table if exists carrinho;
 
 create table carrinho (
@@ -17,13 +18,18 @@ create table carrinho (
 create table cliente (
    id_cliente integer not null auto_increment,
 	codigo varchar(19) not null,
-	email varchar(200) not null,
 	nome varchar(255) not null,
-	senha varchar(255) not null,
 	telefone varchar(11),
+    usuario_id_usuario integer,
 	primary key (id_cliente)
 ) engine=InnoDB;
 
+create table usuario (
+   id_usuario integer not null auto_increment,
+	senha varchar(255) not null,
+	email varchar(200) not null,
+	primary key (id_usuario)
+) engine=InnoDB;
     
 create table endereco (
    id_endereco integer not null auto_increment,
@@ -51,7 +57,7 @@ create table fornecedor (
 	nome_fantasia varchar(255) not null,
 	razao_social varchar(255),
 	telefone varchar(11),
-    senha varchar(255) not null,
+    usuario_id_usuario integer,
 	primary key (id_fornecedor)
 ) engine=InnoDB;
     
@@ -84,7 +90,9 @@ create table produto (
 	primary key (id_produto)
 ) engine=InnoDB;
 
-    
+
+alter table fornecedor add constraint FKUsuarioFornecedor foreign key (usuario_id_usuario) references usuario (id_usuario);  
+alter table cliente add constraint FKUsuarioCliente foreign key (usuario_id_usuario) references usuario (id_usuario);    
 alter table endereco add constraint FKClienteEndereco foreign key (cliente_id_cliente) references cliente (id_cliente);
 alter table endereco add constraint FKFornecedorEndereco foreign key (fornecedor_id_fornecedor) references fornecedor (id_fornecedor);
 alter table estoque add constraint FKFornecedorEstoque foreign key (fornecedor_id_fornecedor) references fornecedor (id_fornecedor);
