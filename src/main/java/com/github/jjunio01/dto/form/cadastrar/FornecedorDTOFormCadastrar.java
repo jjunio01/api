@@ -2,7 +2,9 @@ package com.github.jjunio01.dto.form.cadastrar;
 
 import javax.validation.constraints.NotNull;
 
+import com.github.jjunio01.dto.UsuarioDTO;
 import com.github.jjunio01.model.Fornecedor;
+import com.github.jjunio01.model.Usuario;
 
 /**
  * @author JJunio
@@ -18,15 +20,15 @@ public class FornecedorDTOFormCadastrar implements DTOFormCadastrar<Fornecedor> 
 
 	private String razaoSocial;
 	private String telefone;
-	private String senha;
+	private UsuarioDTO usuario;
 
 	public FornecedorDTOFormCadastrar(String cnpj, String nomeFantasia, String razaoSocial, String telefone,
-			String senha) {
+			UsuarioDTO usuario) {
 		this.cnpj = cnpj;
 		this.nomeFantasia = nomeFantasia;
 		this.razaoSocial = razaoSocial;
 		this.telefone = telefone;
-		this.senha = senha;
+		this.usuario = usuario;
 	}
 
 	public String getCnpj() {
@@ -61,16 +63,22 @@ public class FornecedorDTOFormCadastrar implements DTOFormCadastrar<Fornecedor> 
 		this.telefone = telefone;
 	}
 
-	public String getSenha() {
-		return senha;
+	public UsuarioDTO getUsuario() {
+		return usuario;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public void setUsuario(UsuarioDTO usuario) {
+		this.usuario = usuario;
 	}
 
 	@Override
 	public Fornecedor converter() {
-		return new Fornecedor(this.nomeFantasia, this.razaoSocial, this.cnpj, this.telefone, this.senha);
+		return new Fornecedor(this.nomeFantasia, this.razaoSocial, this.cnpj, this.telefone);
+	}
+
+	public Usuario converterUsuario() {
+
+		return this.usuario.converter();
+
 	}
 }

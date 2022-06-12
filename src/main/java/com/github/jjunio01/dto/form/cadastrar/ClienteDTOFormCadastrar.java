@@ -2,7 +2,9 @@ package com.github.jjunio01.dto.form.cadastrar;
 
 import javax.validation.constraints.NotNull;
 
+import com.github.jjunio01.dto.UsuarioDTO;
 import com.github.jjunio01.model.Cliente;
+import com.github.jjunio01.model.Usuario;
 
 /**
  * @author JJunio
@@ -15,17 +17,14 @@ public class ClienteDTOFormCadastrar implements DTOFormCadastrar<Cliente> {
 	@NotNull
 	private String codigo;
 	@NotNull
-	private String senha;
-	@NotNull
-	private String email;
+	private UsuarioDTO usuario;
 
 	private String telefone;
 
-	public ClienteDTOFormCadastrar(String nome, String codigo, String senha, String email, String telefone) {
+	public ClienteDTOFormCadastrar(String nome, String codigo, UsuarioDTO usuario, String telefone) {
 		this.nome = nome;
 		this.codigo = codigo;
-		this.senha = senha;
-		this.email = email;
+		this.usuario = usuario;
 		this.telefone = telefone;
 	}
 
@@ -45,22 +44,6 @@ public class ClienteDTOFormCadastrar implements DTOFormCadastrar<Cliente> {
 		this.codigo = codigo;
 	}
 
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getTelefone() {
 		return telefone;
 	}
@@ -69,9 +52,21 @@ public class ClienteDTOFormCadastrar implements DTOFormCadastrar<Cliente> {
 		this.telefone = telefone;
 	}
 
+	public UsuarioDTO getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(UsuarioDTO usuario) {
+		this.usuario = usuario;
+	}
+
+	public Usuario converterUsuario() {
+		return this.usuario.converter();
+	}
+
 	@Override
 	public Cliente converter() {
-		return new Cliente(this.codigo, this.nome, this.senha, this.email, this.telefone);
+		return new Cliente(this.codigo, this.nome, this.telefone);
 	}
 
 }

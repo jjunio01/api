@@ -9,7 +9,7 @@ class ClienteControllerTest {
 
 	@Test
 	void deveInserirCliente() {
-		Cliente novoCliente = new Cliente("8585", "José Junio", "12345678", "jose@email.com", "08007770800");
+		//Cliente novoCliente = new Cliente("8585", "José Junio", "12345678", "jose@email.com", "08007770800");
 	}
 
 }
