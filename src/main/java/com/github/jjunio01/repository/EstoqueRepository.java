@@ -19,4 +19,9 @@ public interface EstoqueRepository extends JpaRepository<Estoque, Integer> {
 
 	Optional<Estoque> findByProdutoId(int idProduto);
 
+	List<Estoque> findByFornecedorNomeFantasia(String nomeFornecedor);
+	
+
+	List<Estoque> findByProdutoNomeContainingIgnoreCase(String nomeProduto);
+
 }

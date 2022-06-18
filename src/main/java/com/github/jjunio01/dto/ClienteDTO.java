@@ -15,12 +15,14 @@ public class ClienteDTO {
 	private String codigo;
 	private String nome;
 	private String email;
+	private String telefone;
 
 	public ClienteDTO(Cliente cliente) {
 		this.id = cliente.getId();
 		this.codigo = cliente.getCodigo();
 		this.nome = cliente.getNome();
 		this.email = cliente.getUsuario().getEmail();
+		this.telefone = cliente.getTelefone();
 	}
 
 	public int getId() {
@@ -37,6 +39,10 @@ public class ClienteDTO {
 
 	public String getEmail() {
 		return email;
+	}
+
+	public String getTelefone() {
+		return telefone;
 	}
 
 	public static List<ClienteDTO> converterCliente(List<Cliente> clientes) {

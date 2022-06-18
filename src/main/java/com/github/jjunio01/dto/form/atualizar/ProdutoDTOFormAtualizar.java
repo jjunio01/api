@@ -1,11 +1,6 @@
 package com.github.jjunio01.dto.form.atualizar;
 
-import java.util.Optional;
-
-import javax.validation.constraints.NotNull;
-
 import com.github.jjunio01.model.Produto;
-import com.github.jjunio01.repository.ProdutoRepository;
 
 /**
  * @author JJunio
@@ -13,7 +8,6 @@ import com.github.jjunio01.repository.ProdutoRepository;
  */
 public class ProdutoDTOFormAtualizar {
 
-	@NotNull
 	private double valor;
 
 	private String marca;
@@ -44,16 +38,9 @@ public class ProdutoDTOFormAtualizar {
 		this.descricao = descricao;
 	}
 
-	public Produto atualizar(ProdutoRepository repositoryProduto, int id) {
-		Produto produtoBD = null;
-		Optional<Produto> produtoConsulta = repositoryProduto.findById(id);
+	public Produto atualizar(Produto produtoBD) {
 
-		if (produtoConsulta.isPresent()) {
-			produtoBD = produtoConsulta.get();
-			produtoBD.setDescricao(this.descricao);
-			produtoBD.setMarca(this.marca);
-			produtoBD.setValor(this.valor);
-		}
+		produtoBD.setValor(this.valor);
 
 		return produtoBD;
 	}

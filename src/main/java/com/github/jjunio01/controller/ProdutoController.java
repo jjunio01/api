@@ -49,8 +49,9 @@ public class ProdutoController {
 	public ResponseEntity<ProdutoDTO> atualizar(int id, @Valid ProdutoDTOFormAtualizar formProduto) {
 		Optional<Produto> produtoConsulta = repositoryProduto.findById(id);
 		if (produtoConsulta.isPresent()) {
-			Produto produtoBD = formProduto.atualizar(repositoryProduto, id);
-			return ResponseEntity.ok(new ProdutoDTO(produtoBD));
+			Produto produtoAtualizado = formProduto.atualizar(produtoConsulta.get());
+			repositoryProduto.saveAndFlush(produtoAtualizado);
+			return ResponseEntity.ok(new ProdutoDTO(produtoAtualizado));
 		}
 		return ResponseEntity.notFound().build();
 	}

@@ -16,12 +16,16 @@ public class FornecedorDTO {
 	private String cnpj;
 	private String nomeFantasia;
 	private String telefone;
+	private String razaoSocial;
+	private String email;
 
 	public FornecedorDTO(Fornecedor novoFornecedor) {
 		this.id = novoFornecedor.getId();
 		this.cnpj = novoFornecedor.getCnpj();
 		this.nomeFantasia = novoFornecedor.getNomeFantasia();
 		this.telefone = novoFornecedor.getTelefone();
+		this.razaoSocial = novoFornecedor.getRazaoSocial();
+		this.email = novoFornecedor.getUsuario().getEmail();
 	}
 
 	public int getId() {
@@ -54,6 +58,22 @@ public class FornecedorDTO {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+
+	public String getRazaoSocial() {
+		return razaoSocial;
+	}
+
+	public void setRazaoSocial(String razaoSocial) {
+		this.razaoSocial = razaoSocial;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public static List<FornecedorDTO> converter(List<Fornecedor> findAll) {

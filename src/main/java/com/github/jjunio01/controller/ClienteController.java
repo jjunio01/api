@@ -84,7 +84,11 @@ public class ClienteController
 			@Valid ClienteDTOFormAtualizar clienteFormAtualizar) {
 		Optional<Cliente> clienteBD = repositoryCliente.findById(id);
 		if (clienteBD.isPresent()) {
+			Optional<Usuario> usuarioBD = repositoryUsuario.findById(clienteBD.get().getUsuario().getId());
 			Cliente cliente = clienteFormAtualizar.atualizar(clienteBD.get());
+			usuarioBD.get().setEmail(clienteFormAtualizar.getUsuario().getEmail());
+			cliente.setUsuario(usuarioBD.get());
+			repositoryUsuario.flush();
 			repositoryCliente.flush();
 			return ResponseEntity.ok(new ClienteDTO(cliente));
 		}
