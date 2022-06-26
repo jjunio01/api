@@ -1,5 +1,8 @@
 package com.github.jjunio01.dto;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.github.jjunio01.model.Endereco;
 
 /**
@@ -16,7 +19,6 @@ public class EnderecoDTO {
 	private String referencia;
 
 	public EnderecoDTO(Endereco endereco) {
-		super();
 		this.cidade = endereco.getCidade();
 		this.bairro = endereco.getBairro();
 		this.rua = endereco.getRua();
@@ -66,6 +68,10 @@ public class EnderecoDTO {
 
 	public int getId() {
 		return id;
+	}
+	
+	public static List<EnderecoDTO> converterEndereco(List<Endereco> enderecos) {
+		return enderecos.stream().map(EnderecoDTO::new).collect(Collectors.toList());
 	}
 
 }

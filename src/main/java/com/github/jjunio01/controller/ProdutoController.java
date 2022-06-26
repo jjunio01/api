@@ -7,8 +7,10 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.github.jjunio01.dto.ProdutoDTO;
 import com.github.jjunio01.dto.form.atualizar.ProdutoDTOFormAtualizar;
@@ -20,7 +22,8 @@ import com.github.jjunio01.repository.ProdutoRepository;
  * @author JJunio
  *
  */
-@Controller
+@RestController
+@RequestMapping("/produtos")
 public class ProdutoController {
 
 	@Autowired
@@ -37,6 +40,7 @@ public class ProdutoController {
 
 	}
 
+	@GetMapping("/{id}")
 	public ResponseEntity<ProdutoDTO> recuperarPorId(@PathVariable int id) {
 		Optional<Produto> produtoConsulta = repositoryProduto.findById(id);
 		if (produtoConsulta.isPresent()) {
