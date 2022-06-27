@@ -19,12 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.github.jjunio01.dto.ClienteDTO;
 import com.github.jjunio01.dto.FornecedorDTO;
 import com.github.jjunio01.dto.form.atualizar.FornecedorDTOFormAtualizar;
 import com.github.jjunio01.dto.form.cadastrar.EnderecoDTOFormCadastrar;
 import com.github.jjunio01.dto.form.cadastrar.FornecedorDTOFormCadastrar;
-import com.github.jjunio01.model.Cliente;
 import com.github.jjunio01.model.Endereco;
 import com.github.jjunio01.model.Fornecedor;
 import com.github.jjunio01.model.Usuario;
@@ -89,8 +87,13 @@ public class FornecedorController
 	public ResponseEntity<FornecedorDTO> atualizar(int id, @Valid FornecedorDTOFormAtualizar formFornecedor) {
 		Optional<Fornecedor> fornecedorConsulta = repositoryFornecedor.findById(id);
 		if (fornecedorConsulta.isPresent()) {
-			Fornecedor fornecedorBD = fornecedorConsulta.get();
-			return ResponseEntity.ok(new FornecedorDTO(formFornecedor.atualizar(fornecedorBD)));
+			Optional<Usuario> usuarioBD = repositoryUsuario.findById(fornecedorConsulta.get().getUsuario().getId());
+			usuarioBD.get().setEmail(formFornecedor.getUsuario().getEmail());
+			Fornecedor fornecedor = formFornecedor.atualizar(fornecedorConsulta.get());
+			fornecedor.setUsuario(usuarioBD.get());
+			repositoryUsuario.flush();
+			repositoryFornecedor.flush();
+			return ResponseEntity.ok(new FornecedorDTO(fornecedor));
 		}
 		return ResponseEntity.notFound().build();
 	}

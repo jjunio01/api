@@ -1,5 +1,6 @@
 package com.github.jjunio01.dto.form.atualizar;
 
+import com.github.jjunio01.dto.UsuarioDTO;
 import com.github.jjunio01.model.Cliente;
 
 /**
@@ -11,6 +12,7 @@ public class ClienteDTOFormAtualizar {
 	private String nome;
 	private String codigo;
 	private String telefone;
+	private UsuarioDTO usuario;
 
 	public String getNome() {
 		return nome;
@@ -34,6 +36,14 @@ public class ClienteDTOFormAtualizar {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+
+	public UsuarioDTO getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(UsuarioDTO usuario) {
+		this.usuario = usuario;
 	}
 
 	public Cliente atualizar(Cliente clienteBD) {

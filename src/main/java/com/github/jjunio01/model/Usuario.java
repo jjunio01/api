@@ -50,6 +50,14 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
+	public boolean senhaEhValida(String senha) {
+		return this.senha.equals(senha);
+	}
+
+	public int getId() {
+		return id;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

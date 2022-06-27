@@ -2,7 +2,6 @@ package com.github.jjunio01.model;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +30,7 @@ public class Endereco implements Serializable {
 	@ManyToOne
 	private Fornecedor fornecedor;
 
-	@OneToOne(mappedBy = "endereco", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(mappedBy = "endereco")
 	private Pedido pedido;
 
 	private String cidade;

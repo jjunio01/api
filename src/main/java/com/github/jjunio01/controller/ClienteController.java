@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.github.jjunio01.dto.ClienteDTO;
+import com.github.jjunio01.dto.EnderecoDTO;
 import com.github.jjunio01.dto.form.atualizar.ClienteDTOFormAtualizar;
 import com.github.jjunio01.dto.form.cadastrar.ClienteDTOFormCadastrar;
 import com.github.jjunio01.dto.form.cadastrar.EnderecoDTOFormCadastrar;
@@ -84,7 +85,11 @@ public class ClienteController
 			@Valid ClienteDTOFormAtualizar clienteFormAtualizar) {
 		Optional<Cliente> clienteBD = repositoryCliente.findById(id);
 		if (clienteBD.isPresent()) {
+			Optional<Usuario> usuarioBD = repositoryUsuario.findById(clienteBD.get().getUsuario().getId());
 			Cliente cliente = clienteFormAtualizar.atualizar(clienteBD.get());
+			usuarioBD.get().setEmail(clienteFormAtualizar.getUsuario().getEmail());
+			cliente.setUsuario(usuarioBD.get());
+			repositoryUsuario.flush();
 			repositoryCliente.flush();
 			return ResponseEntity.ok(new ClienteDTO(cliente));
 		}
@@ -121,14 +126,9 @@ public class ClienteController
 	}
 
 	@GetMapping("/{id}/enderecos")
-	public ResponseEntity<ClienteDTO> recuperarEndereco(@PathVariable Integer id) {
+	public List<EnderecoDTO> recuperarEndereco(@PathVariable int id) {
 
-		// Optional<Cliente> clienteBD = repositoryCliente.findByEnderecosCliente(id);
-		// if (clienteBD.isPresent()) {
-		// Cliente cliente = clienteBD.get();
-		// return ResponseEntity.ok(new ClienteDTO(cliente));
-		// }
-		return ResponseEntity.notFound().build();
+		return EnderecoDTO.converterEndereco(repositoryEndereco.findByClienteId(id));
 
 	}
 

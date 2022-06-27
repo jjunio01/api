@@ -2,6 +2,7 @@ package com.github.jjunio01.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,7 +27,7 @@ public class Estoque implements Serializable {
 	@Column(name = "id_estoque")
 	private int id;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER,  cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "id_produto")
 	private Produto produto;
 

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.github.jjunio01.dto.EstoqueDTO;
+import com.github.jjunio01.dto.form.atualizar.EstoqueDTOFormAtualizar;
 import com.github.jjunio01.dto.form.cadastrar.EstoqueDTOFormCadastrar;
 import com.github.jjunio01.model.Estoque;
 import com.github.jjunio01.model.Fornecedor;
@@ -43,7 +44,7 @@ public class EstoqueController implements RestControllerInterface<EstoqueDTO, Es
 	private EstoqueRepository repositoryEstoque;
 
 	@Autowired
-	ProdutoController controllerProduto;
+	private ProdutoController controllerProduto;
 
 	@Override
 	@GetMapping("/estoques")
@@ -90,6 +91,7 @@ public class EstoqueController implements RestControllerInterface<EstoqueDTO, Es
 
 	@Override
 	@PutMapping("/estoques/{id}")
+	@Transactional
 	public ResponseEntity<EstoqueDTO> atualizar(@PathVariable int id, @RequestBody Integer quantidade) {
 
 		if (quantidade < 0) {
@@ -108,25 +110,30 @@ public class EstoqueController implements RestControllerInterface<EstoqueDTO, Es
 	}
 
 	@PutMapping("/estoques/produto/{id}")
-	public ResponseEntity<EstoqueDTO> atualizarPorIdProduto(@PathVariable int id, @RequestBody Integer quantidade) {
+	@Transactional
+	public ResponseEntity<EstoqueDTO> atualizarPorIdProduto(@PathVariable int id,
+			@RequestBody EstoqueDTOFormAtualizar formEstoqueAtualizar) {
 
-		if (quantidade < 0) {
+		if (formEstoqueAtualizar.getQuantidade() < 0) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 
-		Optional<Estoque> consultaEstoqueBD = repositoryEstoque.findByProdutoId(id);
+		Optional<Estoque> estoqueConsulta = repositoryEstoque.findByProdutoId(id);
 
-		if (consultaEstoqueBD.isPresent()) {
-			Estoque estoqueBD = consultaEstoqueBD.get();
-			estoqueBD.setQuantidade(quantidade);
+		if (estoqueConsulta.isPresent()) {
+
+			controllerProduto.atualizar(id, formEstoqueAtualizar.getProduto());
+			Estoque estoque = formEstoqueAtualizar.atualizarQuantidade(estoqueConsulta.get());
 			repositoryEstoque.flush();
-			return ResponseEntity.ok(new EstoqueDTO(estoqueBD));
+
+			return ResponseEntity.ok(new EstoqueDTO(estoque));
 		}
 		return ResponseEntity.notFound().build();
 	}
 
 	@Override
 	@DeleteMapping("/estoques/{id}")
+	@Transactional
 	public ResponseEntity<EstoqueDTO> remover(@PathVariable int id) {
 		Optional<Estoque> consultaEstoqueBD = repositoryEstoque.findById(id);
 
@@ -134,13 +141,36 @@ public class EstoqueController implements RestControllerInterface<EstoqueDTO, Es
 			repositoryEstoque.delete(consultaEstoqueBD.get());
 			return ResponseEntity.ok().build();
 		}
-
 		return ResponseEntity.notFound().build();
+
 	}
 
 	@GetMapping("/{id}/estoques")
-	public List<EstoqueDTO> listarTodosPorFornecedor(@PathVariable int id) {
+	public List<EstoqueDTO> listarTodosPorIdFornecedor(@PathVariable int id) {
 		return EstoqueDTO.converter(repositoryEstoque.findByFornecedorId(id));
+	}
+
+	@GetMapping("/{nomeFornecedor}/estoque")
+	public List<EstoqueDTO> listarTodosPorNomeFornecedor(@PathVariable String nomeFornecedor) {
+		return EstoqueDTO.converter(repositoryEstoque.findByFornecedorNomeFantasia(nomeFornecedor));
+	}
+
+	@GetMapping("/{nomeProduto}/produto")
+	public List<EstoqueDTO> listarPorNomeProduto(@PathVariable String nomeProduto) {
+		return EstoqueDTO.converter(repositoryEstoque.findByProdutoNomeContainingIgnoreCase(nomeProduto));
+	}
+
+	@GetMapping("/estoques/produto/{id}")
+	public ResponseEntity<EstoqueDTO> recuperarPorIdProduto(@PathVariable int id) {
+
+		Optional<Estoque> consultaEstoqueBD = repositoryEstoque.findByProdutoId(id);
+
+		if (consultaEstoqueBD.isPresent()) {
+			Estoque estoqueBD = consultaEstoqueBD.get();
+			return ResponseEntity.ok(new EstoqueDTO(estoqueBD));
+		}
+		return ResponseEntity.notFound().build();
+
 	}
 
 }
