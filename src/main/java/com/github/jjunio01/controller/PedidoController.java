@@ -62,7 +62,7 @@ public class PedidoController
 		Carrinho novoCarrinho = controllerCarrinho.salvar(formPedido.getProdutos());
 
 		if (novoCarrinho == null) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
 
 		Pedido novoPedido = new Pedido();

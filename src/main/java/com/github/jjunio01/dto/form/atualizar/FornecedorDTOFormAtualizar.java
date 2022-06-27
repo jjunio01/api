@@ -69,6 +69,7 @@ public class FornecedorDTOFormAtualizar {
 		fornecedor.setNomeFantasia(this.nomeFantasia);
 		fornecedor.setTelefone(this.telefone);
 		fornecedor.setRazaoSocial(this.razaoSocial);
+		fornecedor.setCnpj(this.cnpj);
 		return fornecedor;
 	}
 
