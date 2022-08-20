@@ -48,7 +48,7 @@ class ClienteTest {
 	void adicionaEnderecoTest() {
 		Cliente novo = new Cliente();
 		Endereco endereco = new Endereco("São João", "Bairro", "Rua", "123", "Perto da minha casa");
-		//novo.adicionarEndereco(endereco);
+		novo.adicionarEndereco(endereco);
 		assertFalse(novo.getEnderecos().isEmpty());
 	}
 }
